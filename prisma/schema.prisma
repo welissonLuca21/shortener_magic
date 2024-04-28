@@ -8,29 +8,37 @@ datasource db {
 }
 
 model User {
-  id           String    @id @default(uuid()) 
-  username     String    @db.VarChar(100)
-  email        String    @unique
-  avatar       String?
-  lastAccess   DateTime?
-  password     String
-  verified     Boolean   @default(false)
-  createdAt    DateTime  @default(now())
-  deletedAt    DateTime?
-  updatedAt    DateTime?  @updatedAt
+  id         String    @id @default(uuid())
+  name       String
+  surname    String
+  username   String    @db.VarChar(100)
+  email      String    @unique
+  avatar     String?
+  lastAccess DateTime?
+  isAdmin    Boolean   @default(false)
+  password   String
+  verified   Boolean   @default(false)
+  createdAt  DateTime  @default(now())
+  deletedAt  DateTime?
+  updatedAt  DateTime? @updatedAt
 
-  shortenedUrls ShortenedUrl[]
+  shortnedUrls ShortnedUrl[]
+
+  @@map("users")
 }
 
-model ShortenedUrl {
-  id        String    @id @default(uuid())
-  originalUrl  String
-  shortenedUrl String    @unique
-  accessCount  Int       @default(0)
-  deletedAt    DateTime?
-  createdAt    DateTime?  @default(now())
-  updatedAt    DateTime  @updatedAt
-  userId       String?   
+model ShortnedUrl {
+  id          String    @id @default(uuid())
+  originalUrl String
+  shortnedUrl String    @unique
+  accessCount Int       @default(0)
+  deletedAt   DateTime?
+  createdAt   DateTime? @default(now())
+  updatedAt   DateTime  @updatedAt
+  userId      String?
 
-  user         User?     @relation(fields: [userId], references: [id])
+  user User? @relation(fields: [userId], references: [id])
+
+  @@index([userId, shortnedUrl])
+  @@map("shortned_urls")
 }
