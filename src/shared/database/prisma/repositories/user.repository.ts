@@ -8,6 +8,9 @@ export class UserRepository
 {
   async findManyUsers() {
     return this.user.findMany({
+      where: {
+        deletedAt: null,
+      },
       orderBy: {
         createdAt: 'asc',
       },
@@ -21,30 +24,40 @@ export class UserRepository
       },
 
       include: {
-        shortenedUrls: true,
+        shortnedUrls: true,
       },
     });
   }
 
   async checkUserExistsByEmail(email: string) {
-    return !!this.user.findFirst({
+    const user = await this.user.findFirst({
       where: {
         email,
       },
     });
+
+    return !!user;
   }
 
   async checkUserExistsByUsername(username: string) {
-    return !!this.user.findFirst({
+    const user = await this.user.findFirst({
       where: {
         username,
       },
     });
+
+    return !!user;
   }
 
   async createUser(data: CreateUserDto) {
     return this.user.create({
-      data,
+      data: {
+        email: data.email,
+        name: data.name,
+        surname: data.surname,
+        username: data.username,
+        password: data.password,
+      },
     });
   }
 
@@ -75,6 +88,19 @@ export class UserRepository
       },
       data: {
         deletedAt: null,
+      },
+    });
+  }
+
+  async getAllDeletedUsers() {
+    return this.user.findMany({
+      where: {
+        deletedAt: {
+          not: null,
+        },
+      },
+      orderBy: {
+        deletedAt: 'asc',
       },
     });
   }

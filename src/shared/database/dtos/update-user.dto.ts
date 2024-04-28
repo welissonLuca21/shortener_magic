@@ -1,37 +1,32 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsString, IsNotEmpty, IsEmail } from 'class-validator';
+import { IsString } from 'class-validator';
 
-export class CreateUserDto {
+export class UpdateUserDto {
   @ApiProperty()
 
   @IsString()
-  @IsNotEmpty()
   name?: string;
 
   @ApiProperty()
 
   @IsString()
-  @IsNotEmpty()
   surname?: string;
+
   @ApiProperty()
 
   @Transform(({ value }) => value.toLowerCase())
+  username?: string;
+
+
+  @ApiProperty()
+
   @IsString()
-  @IsNotEmpty()
-  username: string;
+  password?: string;
+
 
   @ApiProperty()
 
   @IsString()
-  @IsEmail()
-  @IsNotEmpty()
-  @Transform(({ value }) => value.toLowerCase())
-  email: string;
-
-
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  password: string;
+  oldPassword?: string;
 }

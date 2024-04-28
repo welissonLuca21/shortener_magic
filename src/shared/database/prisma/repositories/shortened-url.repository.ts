@@ -1,10 +1,10 @@
-import { Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma.service';
-import { ShortenedUrlRepositoryContract } from '../../repositories/shortned-url.interface';
+import { ShortnedUrlRepositoryContract } from '../../repositories/shortned-url.interface';
+import { CreateShortnedUrlDto } from '../../dtos/create-shortned-url.dto';
 
-export class ShortenedRepositoryRepository
+export class ShortnedRepository
   extends PrismaService
-  implements ShortenedUrlRepositoryContract
+  implements ShortnedUrlRepositoryContract
 {
   private async generateRandomString() {
     let result = '';
@@ -19,46 +19,101 @@ export class ShortenedRepositoryRepository
 
     return result;
   }
-  private async generateShortenedUrl() {
+  private async generateShortnedUrl() {
     const randomUrl = await this.generateRandomString();
-    const shortenedUrl = await this.findShortenedUrlByShortenedUrl(randomUrl);
+    const shortnedUrl = await this.findShortnedUrlByShortnedUrl(randomUrl);
 
-    if (!randomUrl) {
+    if (!shortnedUrl) {
       return randomUrl;
     }
 
-    if (shortenedUrl) {
-      return this.generateShortenedUrl();
+    if (shortnedUrl) {
+      return this.generateShortnedUrl();
     }
   }
 
-  async findManyShortenedUrls() {
-    return this.shortenedUrl.findMany({
+  async findManyShortnedUrls() {
+    return this.shortnedUrl.findMany({
       orderBy: {
         createdAt: 'asc',
       },
     });
   }
 
-  async findShortenedUrlById(id: string) {
-    return this.shortenedUrl.findUnique({
+  async findShortnedUrlById(id: string) {
+    return this.shortnedUrl.findUnique({
       where: {
         id,
       },
     });
   }
 
-  async findShortenedUrlByShortenedUrl(shortenedUrl: string) {
-    return this.shortenedUrl.findUnique({
+  async findShortnedUrlByShortnedUrl(shortnedUrl: string) {
+    return this.shortnedUrl.findUnique({
       where: {
-        shortenedUrl,
+        shortnedUrl,
       },
     });
   }
 
-  async createShortenedUrl(data: Prisma.ShortenedUrlCreateInput) {
-    return this.shortenedUrl.create({
+  async createShortnedUrl(data: CreateShortnedUrlDto) {
+    return this.shortnedUrl.create({
+      data: {
+        accessCount: 0,
+        originalUrl: data.originalUrl,
+        shortnedUrl: await this.generateShortnedUrl(),
+        userId: data.userId,
+      },
+    });
+  }
+
+  async deleteShortnedUrl(id: string) {
+    await this.shortnedUrl.update({
+      where: {
+        id,
+      },
+      data: {
+        deletedAt: new Date(),
+      },
+    });
+  }
+
+  async updateShortnedUrl(
+    id: string,
+    data: Partial<{
+      originalUrl: string;
+      accessCount: number;
+    }>,
+  ) {
+    return this.shortnedUrl.update({
+      where: {
+        id,
+      },
       data,
+    });
+  }
+
+  async restoreShortnedUrl(id: string) {
+    await this.shortnedUrl.update({
+      where: {
+        id,
+      },
+      data: {
+        deletedAt: null,
+      },
+    });
+  }
+
+  async incrementAccessCount(id: string) {
+    await this.shortnedUrl.update({
+      where: {
+        id,
+      },
+      data: {
+        accessCount: {
+          increment: 1,
+        },
+      },
     });
   }
 }

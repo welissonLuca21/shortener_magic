@@ -1,4 +1,4 @@
-import { ShortenedUrlModel } from './shortnerd-url.model';
+import { ShortnedUrlModel } from './shortnerd-url.model';
 
 export interface UserModel {
   id: string;
@@ -11,5 +11,5 @@ export interface UserModel {
   createdAt: Date;
   deletedAt?: Date | null;
   updatedAt?: Date | null;
-  shortenedUrls?: ShortenedUrlModel[];
+  ShortnedUrls?: ShortnedUrlModel[];
 }

@@ -1,4 +1,5 @@
 import { CreateUserDto } from '../dtos/create-user.dto';
+import { UpdateUserDto } from '../dtos/update-user.dto';
 import { UserModel } from '../models/user.model';
 
 export interface UserRepositoryContract {
@@ -7,7 +8,8 @@ export interface UserRepositoryContract {
   checkUserExistsByEmail(email: string): Promise<boolean>;
   checkUserExistsByUsername(username: string): Promise<boolean>;
   createUser(data: CreateUserDto): Promise<UserModel>;
-  updateUser(id: string, data: CreateUserDto): Promise<void>;
+  updateUser(id: string, data: UpdateUserDto): Promise<void>;
   deleteUser(id: string): Promise<void>;
   restoreUser(id: string): Promise<void>;
+  getAllDeletedUsers(): Promise<UserModel[]>;
 }

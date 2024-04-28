@@ -1,9 +1,9 @@
 import { UserModel } from './user.model';
 
-export interface ShortenedUrlModel {
+export interface ShortnedUrlModel {
   id: string;
   originalUrl: string;
-  shortenedUrl: string;
+  shortnedUrl: string;
   accessCount: number;
   createdAt?: Date | null;
   deletedAt?: Date | null;
