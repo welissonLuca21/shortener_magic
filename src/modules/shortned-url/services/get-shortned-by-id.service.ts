@@ -5,7 +5,6 @@ import { ShortnedUrlRepositoryContract } from '@shared/database/repositories/sho
 export class GetShortnedUrlByIdService {
   constructor(
     @Inject('ShortnedUrlRepository')
-
     private readonly shortnerRepository: ShortnedUrlRepositoryContract,
   ) {}
 

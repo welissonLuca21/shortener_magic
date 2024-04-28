@@ -8,7 +8,6 @@ export class CreateShortnedUrlDto {
   originalUrl: string;
 
   @ApiProperty()
-
   @IsString()
   @IsOptional()
   @IsUUID()
