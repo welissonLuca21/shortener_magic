@@ -104,4 +104,12 @@ export class UserRepository
       },
     });
   }
+
+  async findUserByEmail(email: string) {
+    return this.user.findFirst({
+      where: {
+        email,
+      },
+    });
+  }
 }

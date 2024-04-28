@@ -9,6 +9,7 @@ import { SwaggerModule } from '@nestjs/swagger';
 import { UsersModule } from '@modules/users/users.module';
 import { ShortnedUrlModule } from '@modules/shortned-url/shortned-url.module';
 import { ProvidersModule } from '@shared/providers/providers.module';
+import { AuthModule } from '@modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { ProvidersModule } from '@shared/providers/providers.module';
     ProvidersModule,
     UsersModule,
     ShortnedUrlModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

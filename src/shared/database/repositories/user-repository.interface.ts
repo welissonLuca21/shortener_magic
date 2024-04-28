@@ -12,4 +12,5 @@ export interface UserRepositoryContract {
   deleteUser(id: string): Promise<void>;
   restoreUser(id: string): Promise<void>;
   getAllDeletedUsers(): Promise<UserModel[]>;
+  findUserByEmail(email: string): Promise<UserModel>;
 }
