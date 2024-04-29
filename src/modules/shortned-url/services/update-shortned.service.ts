@@ -13,9 +13,9 @@ export class UpdateShortnedUrlService {
     originalUrl: string,
     user?: UserModel,
   ): Promise<void> {
-    const ShortnedUrl = await this.shortnerRepository.findShortnedUrlById(id);
+    const shortnedUrl = await this.shortnerRepository.findShortnedUrlById(id);
 
-    if (!ShortnedUrl) {
+    if (!shortnedUrl) {
       throw new NotFoundException({
         message: `Shortned Url with id ${id} not found`,
         resource: 'Update Shortned Url',
@@ -23,7 +23,7 @@ export class UpdateShortnedUrlService {
       });
     }
 
-    if (ShortnedUrl.userId !== user.id) {
+    if (shortnedUrl.userId !== user.id) {
       throw new NotFoundException({
         message: 'You are not allowed to update this Shortned url',
         resource: 'Update Shortned Url',

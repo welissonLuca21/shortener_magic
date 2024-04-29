@@ -112,4 +112,12 @@ export class UserRepository
       },
     });
   }
+
+  async deletePermanently(id: string) {
+    await this.user.delete({
+      where: {
+        id,
+      },
+    });
+  }
 }

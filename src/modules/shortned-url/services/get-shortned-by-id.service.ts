@@ -9,9 +9,9 @@ export class GetShortnedUrlByIdService {
   ) {}
 
   async execute(id: string): Promise<ShortnedUrlModel> {
-    const ShortnedUrl = await this.shortnerRepository.findShortnedUrlById(id);
+    const shortnedUrl = await this.shortnerRepository.findShortnedUrlById(id);
 
-    if (!ShortnedUrl) {
+    if (!shortnedUrl) {
       throw new NotFoundException({
         message: `Shortned Url with id ${id} not found`,
         resource: 'Get Shortned Url',
@@ -20,6 +20,6 @@ export class GetShortnedUrlByIdService {
     }
 
     await this.shortnerRepository.incrementAccessCount(id);
-    return ShortnedUrl;
+    return shortnedUrl;
   }
 }

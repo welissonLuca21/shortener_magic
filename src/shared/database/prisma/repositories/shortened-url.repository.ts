@@ -116,4 +116,22 @@ export class ShortnedRepository
       },
     });
   }
+
+  async getAllDeletedShortnedUrls() {
+    return this.shortnedUrl.findMany({
+      where: {
+        deletedAt: {
+          not: null,
+        },
+      },
+    });
+  }
+
+  async deletePermanently(id: string) {
+    await this.shortnedUrl.delete({
+      where: {
+        id,
+      },
+    });
+  }
 }

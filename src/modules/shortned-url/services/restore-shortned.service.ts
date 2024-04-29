@@ -1,4 +1,5 @@
 import { Inject, NotFoundException } from '@nestjs/common';
+import { UserModel } from '@shared/database/models/user.model';
 import { ShortnedUrlRepositoryContract } from '@shared/database/repositories/shortned-url.interface';
 
 export class RestoreShortnedUrlService {
@@ -7,12 +8,20 @@ export class RestoreShortnedUrlService {
     private readonly shortnerRepository: ShortnedUrlRepositoryContract,
   ) {}
 
-  async execute(id: string): Promise<void> {
-    const ShortnedUrl = await this.shortnerRepository.findShortnedUrlById(id);
+  async execute(id: string, user: UserModel): Promise<void> {
+    const shortnedUrl = await this.shortnerRepository.findShortnedUrlById(id);
 
-    if (!ShortnedUrl) {
+    if (!shortnedUrl) {
       throw new NotFoundException({
         message: `Shortned Url with id ${id} not found`,
+        resource: 'Restore Shortned Url',
+        scope: 'Shortned Url',
+      });
+    }
+
+    if (shortnedUrl.userId !== user.id) {
+      throw new NotFoundException({
+        message: `You are not allowed to restore this shortned url`,
         resource: 'Restore Shortned Url',
         scope: 'Shortned Url',
       });
