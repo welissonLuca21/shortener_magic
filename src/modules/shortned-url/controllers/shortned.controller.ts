@@ -26,7 +26,6 @@ import { CreateShortnedUrlDto } from '@shared/database/dtos/create-shortned-url.
 import { GetLoggedUser } from '@shared/decorators/get-logged-user.decorator';
 import { UserModel } from '@shared/database/models/user.model';
 import { JwtAuthGuard } from '@modules/auth/guards/jwt.guard';
-import { CheckIsAdmin } from '@shared/decorators/check-is-admin.decorator';
 import { IsAdmin } from '@shared/decorators/is-admin-endpoint.decorator';
 
 @ApiBearerAuth()
