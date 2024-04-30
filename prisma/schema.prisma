@@ -23,6 +23,7 @@ model User {
   updatedAt  DateTime? @updatedAt
 
   shortnedUrls ShortnedUrl[]
+  verifications Verification[]
 
   @@map("users")
 }
@@ -42,3 +43,21 @@ model ShortnedUrl {
   @@index([userId, shortnedUrl])
   @@map("shortned_urls")
 }
+
+enum VerificationType {
+  EMAIL
+  PASSWORD
+}
+
+model Verification {
+  id        String   @id @default(uuid())
+  type      VerificationType 
+  token     String
+  userId    String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("verifications")
+}
+

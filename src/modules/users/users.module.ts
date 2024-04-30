@@ -6,6 +6,8 @@ import { ListAllUsersService } from './services/list-all-users.service';
 import { RestoreUserService } from './services/restore-user.service';
 import { UpdateUserService } from './services/update-user.service';
 import { UserController } from './controllers/user.controller';
+import { ConfirmUserAccountService } from './services/confirm-user-account.service';
+import { ResendConfirmationCodeService } from './services/resend-confirmation-code.service';
 
 @Module({
   controllers: [UserController],
@@ -16,6 +18,8 @@ import { UserController } from './controllers/user.controller';
     RestoreUserService,
     UpdateUserService,
     ListAllUsersService,
+    ConfirmUserAccountService,
+    ResendConfirmationCodeService
   ],
   exports: [
     CreateUserService,

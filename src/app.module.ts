@@ -10,6 +10,7 @@ import { UsersModule } from '@modules/users/users.module';
 import { ShortnedUrlModule } from '@modules/shortned-url/shortned-url.module';
 import { ProvidersModule } from '@shared/providers/providers.module';
 import { AuthModule } from '@modules/auth/auth.module';
+import { ScheduleTasksModule } from '@modules/schedule-tasks/schedule-tasks.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { AuthModule } from '@modules/auth/auth.module';
     UsersModule,
     ShortnedUrlModule,
     AuthModule,
+    ScheduleTasksModule,
   ],
   controllers: [AppController],
   providers: [AppService],

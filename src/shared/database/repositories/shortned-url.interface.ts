@@ -20,4 +20,5 @@ export interface ShortnedUrlRepositoryContract {
   incrementAccessCount(id: string): Promise<void>;
   getAllDeletedShortnedUrls(): Promise<ShortnedUrlModel[]>;
   deletePermanently(id: string): Promise<void>;
+  getAllByUserId(userId: string): Promise<ShortnedUrlModel[]>;
 }

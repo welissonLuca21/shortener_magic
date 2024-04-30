@@ -7,6 +7,6 @@ import { RemoveDisabledUsers } from './services/remove-disabled-users.service';
   imports: [ScheduleModule.forRoot()],
   controllers: [],
   providers: [RemoveDisabledShortnedUrl, RemoveDisabledUsers],
-  exports: [],
+  exports: [RemoveDisabledShortnedUrl, RemoveDisabledUsers],
 })
 export class ScheduleTasksModule {}

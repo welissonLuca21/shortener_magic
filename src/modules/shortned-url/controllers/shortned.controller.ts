@@ -6,7 +6,6 @@ import {
   HttpStatus,
   Param,
   Post,
-  Redirect,
   UseGuards,
 } from '@nestjs/common';
 import { CreateShortnedUrlService } from '../services/create-shortned.service';
@@ -27,6 +26,7 @@ import { GetLoggedUser } from '@shared/decorators/get-logged-user.decorator';
 import { UserModel } from '@shared/database/models/user.model';
 import { JwtAuthGuard } from '@modules/auth/guards/jwt.guard';
 import { IsAdmin } from '@shared/decorators/is-admin-endpoint.decorator';
+import { GetShortnedUrlByUserIdService } from '../services/get-shortned-by-user.service';
 
 @ApiBearerAuth()
 @ApiTags('Shortned Url')
@@ -39,6 +39,7 @@ export class ShortnedController {
     private readonly deleteShortnedUrlService: DeleteShortnedUrlService,
     private readonly updateShortnedUrlService: UpdateShortnedUrlService,
     private readonly getShortnedUrlByIdService: GetShortnedUrlByIdService,
+    private readonly getAllByUserIdService: GetShortnedUrlByUserIdService,
   ) {}
 
   @ApiOperation({
@@ -49,11 +50,7 @@ export class ShortnedController {
     type: CreateShortnedUrlDto,
   })
   @Post()
-  async createShortnedUrl(
-    @Body() dto: CreateShortnedUrlDto,
-    @GetLoggedUser() user: UserModel,
-  ) {
-    dto.userId = user?.id;
+  async createShortnedUrl(@Body() dto: CreateShortnedUrlDto) {
     return this.createShortnedUrlService.execute(dto);
   }
 
@@ -89,7 +86,10 @@ export class ShortnedController {
   })
   @HttpCode(HttpStatus.NO_CONTENT)
   @Post(':id/restore')
-  async restoreShortnedUrl(@Param('id') id: string, @GetLoggedUser() user: UserModel){
+  async restoreShortnedUrl(
+    @Param('id') id: string,
+    @GetLoggedUser() user: UserModel,
+  ) {
     return this.restoreShortnedService.execute(id, user);
   }
 
@@ -117,5 +117,15 @@ export class ShortnedController {
   async getShortnedUrlById(@Param('id') id: string) {
     const { originalUrl } = await this.getShortnedUrlByIdService.execute(id);
     return { url: originalUrl };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({
+    summary: 'Get all shortned urls by user',
+    operationId: 'getAllByUserId',
+  })
+  @Get('user/all')
+  async getAllByUserId(@GetLoggedUser() user: UserModel) {
+    return this.getAllByUserIdService.execute(user.id);
   }
 }

@@ -134,4 +134,12 @@ export class ShortnedRepository
       },
     });
   }
+
+  async getAllByUserId(userId: string) {
+    return this.shortnedUrl.findMany({
+      where: {
+        userId,
+      },
+    });
+  }
 }

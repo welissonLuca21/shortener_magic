@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { ShortnedUrlRepositoryContract } from '@shared/database/repositories/shortned-url.interface';
 
@@ -11,6 +11,7 @@ import { ShortnedUrlRepositoryContract } from '@shared/database/repositories/sho
   durable: true, // This will make the job durable, meaning that it will survive server restarts
 })
 export class RemoveDisabledShortnedUrl {
+  private readonly logger = new Logger(RemoveDisabledShortnedUrl.name);
   constructor(
     @Inject('ShortnedUrlRepository')
     private readonly shortnedUrlRepository: ShortnedUrlRepositoryContract,
@@ -25,12 +26,18 @@ export class RemoveDisabledShortnedUrl {
     const shortnedUrls =
       await this.shortnedUrlRepository.getAllDeletedShortnedUrls();
 
+    this.logger.log('Task remove-disabled-shortned-url started');
     shortnedUrls.forEach(async (shortnedUrl) => {
       if (
         shortnedUrl.deletedAt < new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
       ) {
+        this.logger.log(
+          `Removing permanently shortned-url with id ${shortnedUrl.id}`,
+        );
         await this.shortnedUrlRepository.deletePermanently(shortnedUrl.id);
       }
     });
+
+    this.logger.log('Task remove-disabled-shortned-url finished');
   }
 }

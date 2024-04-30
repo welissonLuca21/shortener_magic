@@ -6,6 +6,7 @@ import { GetAllShortnedUrlService } from './services/get-all-shortned-url.servic
 import { GetShortnedUrlByIdService } from './services/get-shortned-by-id.service';
 import { RestoreShortnedUrlService } from './services/restore-shortned.service';
 import { UpdateShortnedUrlService } from './services/update-shortned.service';
+import { GetShortnedUrlByUserIdService } from './services/get-shortned-by-user.service';
 
 @Module({
   controllers: [ShortnedController],
@@ -16,6 +17,7 @@ import { UpdateShortnedUrlService } from './services/update-shortned.service';
     GetShortnedUrlByIdService,
     RestoreShortnedUrlService,
     UpdateShortnedUrlService,
+    GetShortnedUrlByUserIdService
   ],
   exports: [
     CreateShortnedUrlService,

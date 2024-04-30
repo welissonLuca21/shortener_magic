@@ -10,9 +10,9 @@ export class SigninService {
   constructor(
     @Inject('UserRepository')
     private readonly usersRepository: UserRepositoryContract,
-    @Inject("HashProvider")
+    @Inject('HashProvider')
     private readonly hashProvider: HashProviderContract,
-    @Inject("JwtProvider")
+    @Inject('JwtProvider')
     private readonly jwtProvider: JwtProviderContract,
   ) {}
 
@@ -30,6 +30,14 @@ export class SigninService {
     if (!user) {
       throw new UnauthorizedException({
         message: 'Invalid username or password',
+        resource: 'Signin',
+        scope: 'User',
+      });
+    }
+
+    if (!user.verified) {
+      throw new UnauthorizedException({
+        message: 'User is not verified',
         resource: 'Signin',
         scope: 'User',
       });

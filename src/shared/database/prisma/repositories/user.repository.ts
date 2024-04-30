@@ -120,4 +120,15 @@ export class UserRepository
       },
     });
   }
+
+  async confirmUserAccount(id: string) {
+    await this.user.update({
+      where: {
+        id,
+      },
+      data: {
+        verified: true,
+      },
+    });
+  }
 }

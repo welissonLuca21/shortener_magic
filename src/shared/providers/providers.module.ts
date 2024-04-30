@@ -3,6 +3,7 @@ import { HashProvider } from './hash.provider';
 import { JwtProvider } from './jwt.provider';
 import { JwtModule } from '@nestjs/jwt';
 import { ENVS } from '@config/envs';
+import { MailProvider } from './mail-provider';
 
 @Global()
 @Module({
@@ -23,7 +24,11 @@ import { ENVS } from '@config/envs';
       provide: 'JwtProvider',
       useClass: JwtProvider,
     },
+    {
+      provide: 'MailProvider',
+      useClass: MailProvider,
+    },
   ],
-  exports: ['HashProvider', 'JwtProvider'],
+  exports: ['HashProvider', 'JwtProvider', 'MailProvider'],
 })
 export class ProvidersModule {}

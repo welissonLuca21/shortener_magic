@@ -7,6 +7,8 @@ import {
   Patch,
   Delete,
   Controller,
+  Query,
+  Res,
 } from '@nestjs/common';
 import { CreateUserDto } from '@shared/database/dtos/create-user.dto';
 import { UpdateUserDto } from '@shared/database/dtos/update-user.dto';
@@ -21,8 +23,12 @@ import {
   ApiBody,
   ApiOperation,
   ApiParam,
+  ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
+import { ConfirmUserAccountService } from '../services/confirm-user-account.service';
+import { ResendConfirmationCodeService } from '../services/resend-confirmation-code.service';
+import { Response } from 'express';
 
 @ApiBearerAuth()
 @ApiTags('users')
@@ -35,6 +41,8 @@ export class UserController {
     private readonly deleteUser: DeleteUserService,
     private readonly restoreUser: RestoreUserService,
     private readonly listAllUsers: ListAllUsersService,
+    private readonly confirmUserAccount: ConfirmUserAccountService,
+    private readonly resendConfirmationCodeService: ResendConfirmationCodeService,
   ) {}
 
   @ApiOperation({ summary: 'Create a new user', operationId: 'createUser' })
@@ -91,5 +99,27 @@ export class UserController {
   @Put(':id')
   async update(@Param('id') id: string, @Body() data: UpdateUserDto) {
     return this.updateUser.execute(id, data);
+  }
+
+  @ApiOperation({
+    summary: 'Confirm user account',
+    operationId: 'confirmUserAccount',
+  })
+  @ApiQuery({ name: 'token', required: true })
+  @Get('verify-email/account')
+  async confirm(@Query('token') token: string, @Res() response: Response) {
+    await this.confirmUserAccount.execute(token);
+
+    return response.send('User account confirmed');
+  }
+
+  @ApiOperation({
+    summary: 'Resend confirmation code',
+    operationId: 'resendConfirmationCode',
+  })
+  @ApiParam({ name: 'email', required: true })
+  @Post(':email/resend')
+  async resend(@Param('email') email: string) {
+    return this.resendConfirmationCodeService.execute(email);
   }
 }

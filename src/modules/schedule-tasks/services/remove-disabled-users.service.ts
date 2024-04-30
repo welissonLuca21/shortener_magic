@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { UserRepositoryContract } from '@shared/database/repositories/user-repository.interface';
 
@@ -11,6 +11,7 @@ import { UserRepositoryContract } from '@shared/database/repositories/user-repos
   durable: true, // This will make the job durable, meaning that it will survive server restarts
 })
 export class RemoveDisabledUsers {
+  private readonly logger = new Logger(RemoveDisabledUsers.name);
   constructor(
     @Inject('UserRepository')
     private readonly userRepository: UserRepositoryContract,
@@ -24,10 +25,14 @@ export class RemoveDisabledUsers {
   async execute() {
     const deletedUsers = await this.userRepository.getAllDeletedUsers();
 
+    this.logger.log('Task remove-disabled-users started');
     deletedUsers.forEach(async (user) => {
       if (user.deletedAt < new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)) {
+        this.logger.log(`Removing permanently user with id ${user.id}`);
         await this.userRepository.deletePermanently(user.id);
       }
     });
+
+    this.logger.log('Task remove-disabled-users finished');
   }
 }

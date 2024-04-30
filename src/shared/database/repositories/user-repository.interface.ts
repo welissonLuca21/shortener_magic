@@ -14,4 +14,5 @@ export interface UserRepositoryContract {
   getAllDeletedUsers(): Promise<UserModel[]>;
   findUserByEmail(email: string): Promise<UserModel>;
   deletePermanently(id: string): Promise<void>;
+  confirmUserAccount(id: string): Promise<void>;
 }

@@ -8,6 +8,7 @@ import { Logger, LoggerErrorInterceptor } from 'nestjs-pino';
 import { json } from 'express';
 import * as Sentry from '@sentry/node';
 import { SentryFilter } from '@shared/interceptors/exception-filter.interceptor';
+import { ENVS } from '@config/envs';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -41,6 +42,6 @@ async function bootstrap() {
     },
   });
 
-  await app.listen(process.env.PORT || 3000);
+  await app.listen(ENVS.APP_PORT || 3000);
 }
 bootstrap();
