@@ -1,73 +1,162 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Project Documentation
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This documentation provides an overview of the project structure, setup instructions, and important information regarding the Shortener Magic application. It includes details about the folder structure, scripts, naming conventions, design patterns, and coding standards used in the project.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Table of Contents
 
-## Description
+- [Prerequisites](#prerequisites)
+- [Getting Started](#getting-started)
+  - [Installation](#installation)
+  - [Environment Variables](#environment-variables)
+  - [Database Setup](#database-setup)
+- [Scripts](#scripts)
+- [Technologies Used](#technologies-used)
+- [Project Structure](#project-structure)
+- [Design Patterns](#design-patterns)
+- [Naming Conventions](#naming-conventions)
+- [API Documentation](#api-documentation)
+- [Communication](#communication)
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Prerequisites
 
-## Installation
+Before setting up the Shortener Magic application, make sure you have the following prerequisites installed on your system:
+
+- Node.js (version 18.x or later)
+- npm (version 6.x or later)
+- Docker (version 17.06 or later)
+- Docker Compose (version 1.17 or later)
+
+## Getting Started
+
+To get the Shortener Magic application up and running, follow the steps below:
+
+### Installation
+
+1. Clone the repository:
+
+git clone {repo}
+cd {repo}
+
+
+2. Install the dependencies:
+
+npm install
+
+
+### Environment Variables
+
+Create a `.env` file in the root directory and add the following environment variables with their respective values:
 
 ```bash
-$ yarn install
+# Postgres configuration
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_DB=shortener
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/shortener
+
+# JWT configuration
+JWT_SECRET_KEY=
+JWT_EXPIRES_IN=
+
+# Sentry configuration
+SENTRY_DNS=
+
+# SendGrid configuration
+SENDGRID_CONFIRM_ACCOUNT_TEMPLATE_ID=
+SENDGRID_WELCOME_SUBJECT="Bem-vindo ao Shortener Magic!"
+SENDGRID_API_KEY=
+SENDGRID_FROM_EMAIL=
+
+# Application configuration
+APP_URL=http://localhost:4000
+APP_PORT=4000
 ```
 
-## Running the app
+Note: Please replace the values with appropriate ones or use fake data for development purposes.
+
+Database Setup
+Start the PostgreSQL database using Docker Compose
+
+docker-compose up -d
+Run the database migrations:
+npm run prisma generate
+
+Scripts
+The following scripts are available to run various tasks in the Shortener Magic application:
+```bash
+build: Builds the application using NestJS.
+start: Starts the application in production mode.
+start:dev: Starts the application in development mode with hot-reloading.
+start:debug: Starts the application in debug mode with hot-reloading.
+lint: Lints the TypeScript source code using ESLint with the Airbnb rules and applies automatic fixes.
+test: Runs the unit tests using Jest.
+To execute a script, use the command npm run <script-name>.
+```
+
+### Technologies Used
+The Shortener Magic application utilizes the following main technologies and libraries:
+
+*NestJS*: A progressive Node.js framework for building efficient, reliable, and scalable server-side applications.
+*Prisma ORM*: An object-relational mapping (ORM) tool for TypeScript and JavaScript, providing database access and manipulation.
+*SendGrid*: An email delivery service for sending transactional and marketing emails.
+*Docker*: A platform for developing, shipping, and running applications in containers.
+
+### Project Structure
+The project follows a specific folder structure to maintain organization and separation of concerns. Here's an overview of the main directories and their purposes:
 
 ```bash
-# development
-$ yarn run start
-
-# watch mode
-$ yarn run start:dev
-
-# production mode
-$ yarn run start:prod
+📂 src/
+├── 📂 configs/         # Project configuration files and settings
+├── 📂 database/        # Database configuration and manipulation
+│   ├── 📂 repositories/  #  Perform database operations and encapsulate data access logic.
+├── 📂 modules/         # Main project modules
+│   ├── 📂 auth/        # Authentication module: handles user authentication and authorization
+│   │   ├── 📂 controllers/  # Controllers for handling HTTP requests
+│   │   ├── 📂 services/     # Business logic services
+│   │   ├── 📂 interfaces/   # Shared interfaces and type definitions
+│   │   └── 📂 dtos/         # Data Transfer Objects used for data validation and transformation
+├── 📂 providers/       # Providers for external services or libraries
+└── 📂 shared/          # Shared components and utilities
+    ├── 📂 database/    # Shared database components and utilities
+    ├── 📂 decorators/  # Custom decorators used throughout the project
+    ├── 📂 interfaces/  # Shared interfaces and type definitions
+    ├── 📂 interceptors/       # Custom interceptors used for request validation
+    └── 📂 utils/       # Shared utility functions and helper modules
 ```
+## Design Patterns
+The Shortener Magic application follows the Module design pattern to organize the codebase into self-contained modules. Each module consists of the following layers:
 
-## Test
+Controllers: Handle HTTP requests and invoke services to process the requests.
+Services: Contain the business logic and interact with repositories and providers.
+Repositories: Perform database operations and encapsulate data access logic.
+In addition to these module-specific layers, the Shortener Magic application also utilizes a Providers layer. The Providers layer consists of globally accessible classes that encapsulate logic for external services or libraries. These classes can be shared among all modules and files in the project.
 
-```bash
-# unit tests
-$ yarn run test
+This modular approach, along with the inclusion of a Providers layer, promotes separation of concerns, reusability, and maintainability of the codebase. It also facilitates easier testing and enhances overall code comprehension.
 
-# e2e tests
-$ yarn run test:e2e
+### Naming Conventions
+The Shortener Magic application follows the following naming conventions for files:
 
-# test coverage
-$ yarn run test:cov
-```
+*kebab-case*: Used for naming files and directories.
+Examples: create-user.service.ts, create-user.controller.ts, user.repository.ts
+The use of clear and descriptive names helps improve code readability and maintainability.
 
-## Support
+### API Documentation
+The Shortener Magic application provides interactive API documentation generated from the Swagger specification. To access the documentation, start the application and navigate to http://localhost:4000/docs or https://shortener-magic.onrender.com/docs in your browser.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### Communication
+For any questions, concerns, or feedback related to the Shortener Magic application, please reach out to the project team through the designated communication channels.
 
-## Stay in touch
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
 
-## License
-
-Nest is [MIT licensed](LICENSE).
+### Melhorias
+- [ ] Adicionar testes unitários e de integração
+- [ ] Adicionar testes de e2e
+- [ ] Separar ambientes de desenvolvimento, homologação e produção
+- [ ] Adicionar autenticação via OAuth
+- [ ] Adicionar cache para consultas frequentes
+- [ ] Adicionar rate limiting para proteção contra ataques de força bruta
+- [ ] Utilizar arquitetura de microsserviços para escalabilidade
+- [ ] Adicionar modulo de administração para gerenciamento de usuários e links
+- [ ] Adicionar suporte para múltiplos domínios
+- [ ] Adicionar suporte para personalização de links
+- [ ] Adicionar escaneamento de links para detecção de malware
